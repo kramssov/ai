@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Create Product</h1>
+<form method="post" enctype="multipart/form-data" x-data="salesOrderApp()">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div>
+        <h2>Product Images</h2>
+        <div class="mb-3">
+            <label for="id_image-0-image" class="form-label">Image 1</label>
+            <input type="file" id="id_image-0-image" name="image-0-image" class="form-control" accept="image/*">
+        </div>
+        <div class="mb-3">
+            <label for="id_image-1-image" class="form-label">Image 2</label>
+            <input type="file" id="id_image-1-image" name="image-1-image" class="form-control" accept="image/*">
+        </div>
+        <div class="mb-3">
+            <label for="id_image-2-image" class="form-label">Image 3</label>
+            <input type="file" id="id_image-2-image" name="image-2-image" class="form-control" accept="image/*">
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Create Product</button>
+</form>
+
+<script>
+    function salesOrderApp() {
+        return {
+            productLines: [{ product: '', quantity: 1, asin_sticker: '' }],
+
+            addProductLine() {
+                this.productLines.push({ product: '', quantity: 1, asin_sticker: '' });
+            },
+
+            removeProductLine(index) {
+                this.productLines.splice(index, 1);
+            }
+        };
+    }
+</script>
+{% endblock %}

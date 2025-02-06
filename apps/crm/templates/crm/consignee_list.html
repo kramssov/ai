@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Consignee List</h1>
+<a href="{% url 'consignee_create' %}" class="btn btn-primary mb-3">Create Consignee</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Company Name</th>
+            <th>Contact Person</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for consignee in consignees %}
+            <tr>
+                <td>{{ consignee.name }}</td>
+                <td>{{ consignee.email }}</td>
+                <td>{{ consignee.phone }}</td>
+                <td>{{ consignee.company_name }}</td>
+                <td>{{ consignee.contact_person }}</td>
+                <td>
+                    <a href="{% url 'consignee_update' consignee.id %}" class="btn btn-info">Update</a>
+                    <a href="{% url 'consignee_delete' consignee.id %}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

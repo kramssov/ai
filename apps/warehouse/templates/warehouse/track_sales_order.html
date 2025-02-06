@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Track Sales Order: {{ sales_order.id }}</h1>
+<p>Status: {{ sales_order.get_status_display }}</p>
+<p>Created At: {{ sales_order.created_at }}</p>
+<h2>Order Products</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>ASIN Sticker</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order_product in sales_order.products.all %}
+            <tr>
+                <td>{{ order_product.product.name }} (WHSKU: {{ order_product.product.whsku }})</td>
+                <td>{{ order_product.quantity }}</td>
+                <td>{{ order_product.asin_sticker }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h2>Collies</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Dimensions</th>
+            <th>Weight</th>
+            <th>Shipping Label</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for collie in sales_order.collies.all %}
+            <tr>
+                <td>{{ collie.id }}</td>
+                <td>{{ collie.dimensions }}</td>
+                <td>{{ collie.weight }}</td>
+                <td>
+                    {% if collie.shipping_label %}
+                        <a href="{{ collie.shipping_label.url }}">Download Label</a>
+                    {% else %}
+                        No label available
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<h2>Documents</h2>
+<ul>
+    {% for document in sales_order.documents.all %}
+        <li><a href="{{ document.document.url }}">{{ document.document.name }}</a></li>
+    {% endfor %}
+</ul>
+<a href="{% url 'manage_warehouse' %}" class="btn btn-secondary mb-3">Back to Manage Warehouse</a>
+{% endblock %}

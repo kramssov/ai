@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Create Sales Order</h1>
+<form method="post" enctype="multipart/form-data" x-data="salesOrderApp()">
+    {% csrf_token %}
+    {{ order_form.as_p }}
+    <div>
+        <h2>Order Products</h2>
+        <template x-for="(productLine, index) in productLines" :key="index" class="product-line">
+            <div class="mb-3">
+                <label :for="'product_' + index" class="form-label">Product</label>
+                <select :id="'product_' + index" x-model="productLines[index].product" class="form-select">
+                    <option value="">Select a product</option>
+                    {% for product in products %}
+                        <option :value="{{ product.id }}">{{ product.name }} (WHSKU: {{ product.whsku }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label :for="'quantity_' + index" class="form-label">Quantity</label>
+                <input :id="'quantity_' + index" type="number" x-model.number="productLines[index].quantity" class="form-control" min="1">
+            </div>
+            <div class="mb-3" x-show="isFBAShipment">
+                <label :for="'asin_sticker_' + index" class="form-label">ASIN Sticker</label>
+                <input :id="'asin_sticker_' + index" type="text" x-model="productLines[index].asin_sticker" class="form-control">
+            </div>
+            <button type="button" @click="removeProductLine(index)" class="btn btn-danger mb-3">Remove Product</button>
+        </template>
+        <button type="button" @click="addProductLine" class="btn btn-success mb-3">Add Product</button>
+    </div>
+    <input type="hidden" name="order_products[]" :value="productLines.map(line => line.product).join(',')" />
+    <input type="hidden" name="order_products[]" :value="productLines.map(line => line.quantity).join(',')" />
+    <input type="hidden" name="order_products[]" :value="productLines.map(line => line.asin_sticker).join(',')" />
+    <div class="mb-3">
+        <label for="id_document" class="form-label">Attach Document</label>
+        <input type="file" id="id_document" name="document" class="form-control" accept=".pdf,.docx,.jpg,.jpeg,.png">
+    </div>
+    <button type="submit" class="btn btn-primary">Create Sales Order</button>
+</form>
+
+<script>
+    function salesOrderApp() {
+        return {
+            productLines: [{ product: '', quantity: 1, asin_sticker: '' }],
+            isFBAShipment: false,
+
+            addProductLine() {
+                this.productLines.push({ product: '', quantity: 1, asin_sticker: '' });
+            },
+
+            removeProductLine(index) {
+                this.productLines.splice(index, 1);
+            },
+
+            updateFBAShipment(value) {
+                this.isFBAShipment = value;
+            }
+        };
+    }
+</script>
+{% endblock %}

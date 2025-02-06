@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Manage Warehouses</h1>
+<a href="{% url 'create_warehouse' %}" class="btn btn-primary mb-3">Create Warehouse</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for warehouse in warehouses %}
+            <tr>
+                <td>{{ warehouse.name }}</td>
+                <td>{{ warehouse.location }}</td>
+                <td>
+                    <!-- Add more actions if needed -->
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

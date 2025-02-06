@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Manage Warehouses</h1>
+<a href="{% url 'create_sales_order' %}" class="btn btn-primary mb-3">Create Sales Order</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Status</th>
+            <th>Created At</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in sales_orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.get_status_display }}</td>
+                <td>{{ order.created_at }}</td>
+                <td>
+                    {% if order.status == 'pending' %}
+                        <a href="{% url 'initiate_picking' order.id %}" class="btn btn-info">Initiate Picking</a>
+                    {% elif order.status == 'picking' %}
+                        <a href="{% url 'add_collie' order.id %}" class="btn btn-success">Add Collie</a>
+                    {% elif order.status == 'packed' %}
+                        <a href="{% url 'select_shipping_provider' order.id %}" class="btn btn-warning">Select Shipping Provider</a>
+                    {% elif order.status == 'shipped' %}
+                        <a href="{% url 'confirm_shipment' order.id %}" class="btn btn-success">Confirm Shipment</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

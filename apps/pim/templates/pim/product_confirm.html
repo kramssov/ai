@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Confirm Product: {{ product.name }}</h1>
+<p>Are you sure you want to confirm this product?</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-success">Confirm</button>
+    <a href="{% url 'product_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

@@ -1,0 +1,7 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Error Exporting Sales Order</h1>
+<p>Error: {{ error }}</p>
+<a href="{% url 'manage_warehouse' %}" class="btn btn-secondary">Back to Manage Warehouse</a>
+{% endblock %}

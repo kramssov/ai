@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Update Product: {{ product.name }}</h1>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div>
+        <h2>Product Images</h2>
+        {% for form in images_formset %}
+            <div class="mb-3">
+                <label for="id_{{ form.prefix }}-image" class="form-label">Image {{ forloop.counter }}</label>
+                <input type="file" id="id_{{ form.prefix }}-image" name="{{ form.prefix }}-image" class="form-control" accept="image/*">
+            </div>
+        {% endfor %}
+    </div>
+    <button type="submit" class="btn btn-primary">Update Product</button>
+</form>
+{% endblock %}

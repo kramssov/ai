@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Sales Order Exported</h1>
+<p>Order ID: {{ order_id }}</p>
+<pre>{{ response|safe }}</pre>
+<a href="{% url 'manage_warehouse' %}" class="btn btn-secondary">Back to Manage Warehouse</a>
+{% endblock %}

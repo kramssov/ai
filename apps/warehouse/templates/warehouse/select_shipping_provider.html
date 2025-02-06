@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Select Shipping Provider for Sales Order: {{ sales_order.id }}</h1>
+<form method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+        <label for="id_provider" class="form-label">Shipping Provider</label>
+        <select id="id_provider" name="provider" class="form-select">
+            <option value="">Select a provider</option>
+            <option value="easytrans">EasyTrans</option>
+            <option value="sendcloud">SendCloud</option>
+        </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+<a href="{% url 'manage_warehouse' %}" class="btn btn-secondary mb-3">Back to Manage Warehouse</a>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Product List</h1>
+{% if request.user.role in ['tenant_admin', 'client_admin', 'client_logistics_manager', 'client_fba_manager'] %}
+<a href="{% url 'product_create' %}" class="btn btn-primary mb-3">Create Product</a>
+{% endif %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>SKU</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Dimensions</th>
+            <th>Weight</th>
+            <th>WHSKU</th>
+            <th>ASIN</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+            <tr>
+                <td>{{ product.sku }}</td>
+                <td>{{ product.name }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.dimensions }}</td>
+                <td>{{ product.weight }}</td>
+                <td>{{ product.whsku }}</td>
+                <td>{{ product.asin }}</td>
+                <td>{{ product.get_status_display }}</td>
+                <td>
+                    {% if request.user.role == 'tenant_admin' %}
+                        <a href="{% url 'product_update' product.id %}" class="btn btn-info">Update</a>
+                        {% if product.status == 'pending' %}
+                            <a href="{% url 'product_confirm' product.id %}" class="btn btn-success">Confirm</a>
+                        {% endif %}
+                        <a href="{% url 'product_delete' product.id %}" class="btn btn-danger">Delete</a>
+                    {% elif request.user.role in ['client_admin', 'client_logistics_manager', 'client_fba_manager'] and product.status == 'pending' %}
+                        <a href="{% url 'product_update' product.id %}" class="btn btn-info">Update</a>
+                        <a href="{% url 'product_delete' product.id %}" class="btn btn-danger">Delete</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Finalize Collie: {{ collie.id }} for Sales Order: {{ sales_order.id }}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Finalize Collie</button>
+</form>
+<a href="{% url 'manage_warehouse' %}" class="btn btn-secondary mb-3">Back to Manage Warehouse</a>
+{% endblock %}
