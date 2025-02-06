@@ -1,0 +1,9 @@
+Django
+djangorestframework
+requests
+psycopg2-binary
+boto3
+django-storages
+gunicorn
+reportlab
+dj-database-url

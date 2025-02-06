@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DEBUG=1
+      - DATABASE_NAME=fusehub_mvp
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=password
+      - DATABASE_HOST=db
+      - DATABASE_PORT=5432
+      - AWS_ACCESS_KEY_ID=your_aws_access_key_id
+      - AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key
+      - AWS_STORAGE_BUCKET_NAME=your_s3_bucket_name
+      - AWS_S3_REGION_NAME=your_aws_region
+      - EASYTRANS_USERNAME=your_easytrans_username
+      - EASYTRANS_PASSWORD=your_easytrans_password
+      - EASYTRANS_SERVER=your_easytrans_server
+      - EASYTRANS_ENVIRONMENT=your_easytrans_environment
+
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=fusehub_mvp
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+
+  redis:
+    image: redis:6
+    volumes:
+      - redis_data:/data
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/app.conf:/etc/nginx/conf.d/default.conf
+      - .:/app
+    depends_on:
+      - web
+
+volumes:
+  postgres_data:
+  redis_data:
